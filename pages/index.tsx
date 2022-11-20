@@ -5,6 +5,13 @@ import { CartSummary } from "../components/CartSummary";
 import { EmptyContainer } from "../components/EmptyContainer";
 import { PurchaseSummary } from "../components/PurchaseSummary";
 import { Section } from "../components/Section";
+import { Voucher } from "../components/forms/Voucher";
+import { PersonalInfo } from "../components/forms/PersonalInfo";
+import { PurchaseAddress } from "../components/forms/PurchaseAddress";
+import { PaymentMethod } from "../components/forms/PaymentMethod";
+import { Button, Typography } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { FirstStep } from "../components/steps/FirstStep";
 
 const cartItems = [
   {
@@ -20,12 +27,7 @@ export default function Home() {
     <Container>
       <Header />
       <Box sx={{ display: "flex" }}>
-        <Box sx={{ width: "70%" }}>
-          <Section child={<EmptyContainer />} title="CUPOM DE DESCONTO" />
-          <Section child={<EmptyContainer />} title="INFORMAÇÕES PESSOAIS" />
-          <Section child={<EmptyContainer />} title="ENDEREÇO DE COBRANÇA" />
-          <Section child={<EmptyContainer />} title="MÉTODOS DE PAGAMENTO" />
-        </Box>
+        <FirstStep />
         <Box sx={{ width: "30%" }}>
           <PurchaseSummary
             subtotal={undefined}
@@ -36,6 +38,11 @@ export default function Home() {
           />
           <Box sx={{ marginTop: "48px" }}>
             <CartSummary products={cartItems} />
+          </Box>
+          <Box sx={{ marginTop: "24px" }}>
+            <Button startIcon={<AddIcon />} variant="outlined" fullWidth>
+              ADICIONAR PRODUTO
+            </Button>
           </Box>
         </Box>
       </Box>
