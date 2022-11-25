@@ -31,11 +31,6 @@ export const PersonalInfo = () => {
         <Checkbox defaultChecked />
         <Typography>Aceitos os Termos de Uso e Condições</Typography>
       </Box>
-      <Box>
-        <Button size="large" variant="contained">
-          Validar Dados
-        </Button>
-      </Box>
     </Box>
   );
 };

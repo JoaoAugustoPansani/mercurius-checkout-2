@@ -5,6 +5,8 @@ import { Voucher } from "../forms/Voucher";
 import { Section } from "../Section";
 import { PersonalInfo } from "../forms/PersonalInfo";
 import { PaymentMethod } from "../forms/PaymentMethod";
+import { Address } from "../forms/Address";
+import { Card } from "../forms/Card";
 
 export const FirstStep = () => {
   return (
@@ -14,8 +16,9 @@ export const FirstStep = () => {
       </Container>
       <Section child={<Voucher />} title="CUPOM DE DESCONTO" />
       <Section child={<PersonalInfo />} title="INFORMAÇÕES PESSOAIS" />
-      {/* <Section child={<PurchaseAddress />} title="ENDEREÇO DE COBRANÇA" /> */}
+      <Section child={<Address />} title="ENDEREÇO DE COBRANÇA" />
       <Section child={<PaymentMethod />} title="MÉTODOS DE PAGAMENTO" />
+      <Section child={<Card />} title="INFORMAÇÕES DE PAGAMENTO" />
       <Container sx={{ display: "flex", width: "100%", marginTop: "32px" }}>
         <Button
           size="large"

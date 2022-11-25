@@ -39,11 +39,6 @@ export default function Home() {
           <Box sx={{ marginTop: "48px" }}>
             <CartSummary products={cartItems} />
           </Box>
-          <Box sx={{ marginTop: "24px" }}>
-            <Button startIcon={<AddIcon />} variant="outlined" fullWidth>
-              ADICIONAR PRODUTO
-            </Button>
-          </Box>
         </Box>
       </Box>
     </Container>
