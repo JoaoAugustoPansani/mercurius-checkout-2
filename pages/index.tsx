@@ -7,11 +7,11 @@ import { PurchaseSummary } from "../components/PurchaseSummary";
 import { Section } from "../components/Section";
 import { Voucher } from "../components/forms/Voucher";
 import { PersonalInfo } from "../components/forms/PersonalInfo";
-import { PurchaseAddress } from "../components/forms/PurchaseAddress";
 import { PaymentMethod } from "../components/forms/PaymentMethod";
 import { Button, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { FirstStep } from "../components/steps/FirstStep";
+import { AllProviders } from "../providers/AllProviders";
 
 const cartItems = [
   {
@@ -24,23 +24,25 @@ const cartItems = [
 
 export default function Home() {
   return (
-    <Container>
-      <Header />
-      <Box sx={{ display: "flex" }}>
-        <FirstStep />
-        <Box sx={{ width: "30%" }}>
-          <PurchaseSummary
-            subtotal={undefined}
-            taxes={undefined}
-            voucher={undefined}
-            voucherTitle={undefined}
-            total={undefined}
-          />
-          <Box sx={{ marginTop: "48px" }}>
-            <CartSummary products={cartItems} />
+    <AllProviders>
+      <Container>
+        <Header />
+        <Box sx={{ display: "flex" }}>
+          <FirstStep />
+          <Box sx={{ width: "30%" }}>
+            <PurchaseSummary
+              subtotal={undefined}
+              taxes={undefined}
+              voucher={undefined}
+              voucherTitle={undefined}
+              total={undefined}
+            />
+            <Box sx={{ marginTop: "48px" }}>
+              <CartSummary products={cartItems} />
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </AllProviders>
   );
 }

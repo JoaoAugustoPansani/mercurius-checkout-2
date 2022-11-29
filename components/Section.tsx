@@ -3,13 +3,24 @@ import { Box } from "@mui/system";
 import { FunctionComponent, useState } from "react";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import LockIcon from "@mui/icons-material/Lock";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 interface SectionProps {
   title: string;
   child: JSX.Element;
+  isBlockable?: boolean;
+  blockParam?: boolean;
+  isValid?: boolean;
 }
 
-export const Section: FunctionComponent<SectionProps> = ({ title, child }) => {
+export const Section: FunctionComponent<SectionProps> = ({
+  title,
+  child,
+  isBlockable,
+  blockParam,
+  isValid,
+}) => {
   const [isSectionActive, setSectionActive] = useState(false);
 
   return (
@@ -25,13 +36,33 @@ export const Section: FunctionComponent<SectionProps> = ({ title, child }) => {
           cursor: "pointer",
         }}
         onClick={() => {
-          setSectionActive(!isSectionActive);
+          if (blockParam || blockParam == undefined) {
+            setSectionActive(!isSectionActive);
+          }
         }}
       >
-        <Typography>{title}</Typography>
+        <Box sx={{ display: "flex", gap: "4px" }}>
+          <Typography>{title}</Typography>
+          {isBlockable ? (
+            blockParam ? null : (
+              <LockIcon sx={{ width: "16px" }} />
+            )
+          ) : null}
+          {isValid ? (
+            <CheckCircleOutlineIcon color="success" sx={{ width: "16px" }} />
+          ) : null}
+        </Box>
         {isSectionActive ? <KeyboardArrowDownIcon /> : <KeyboardArrowUpIcon />}
       </Box>
-      <Box sx={isSectionActive ? {} : { display: "none" }}>{child}</Box>
+      <Box
+        sx={
+          isSectionActive && (blockParam || blockParam == undefined)
+            ? {}
+            : { display: "none" }
+        }
+      >
+        {child}
+      </Box>
     </Container>
   );
 };

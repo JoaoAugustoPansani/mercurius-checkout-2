@@ -7,7 +7,6 @@ import { BreakfastDiningOutlined } from "@mui/icons-material";
 interface TextMaskCustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
-  cardHolder?: CardType;
 }
 
 export const CEPCustomMask = React.forwardRef<HTMLElement, TextMaskCustomProps>(
@@ -58,20 +57,39 @@ export const CardCustomMask = React.forwardRef<
   HTMLElement,
   TextMaskCustomProps
 >(function TextMaskCustom(props) {
-  const { onChange, cardHolder, ...other } = props;
+  const { onChange, ...other } = props;
   const ref = React.createRef();
+
+  const [cardHolder, setCardHolder] = React.useState();
 
   return (
     <IMaskInput
       {...other}
       mask={
-        cardHolder != CardType.Amex
+        cardHolder == CardType.Amex
           ? "0000 000000 00000"
           : "0000 0000 0000 0000"
       }
-      definitions={{
-        "#": /[1-9]/,
+      // inputRef={ref}
+      onAccept={(value: any) => {
+        onChange({ target: { name: props.name, value } });
       }}
+      overwrite
+    />
+  );
+});
+
+export const PhoneCustomMask = React.forwardRef<
+  HTMLElement,
+  TextMaskCustomProps
+>(function TextMaskCustom(props) {
+  const { onChange, ...other } = props;
+  const ref = React.createRef();
+
+  return (
+    <IMaskInput
+      {...other}
+      mask={"00 0 0000-0000"}
       // inputRef={ref}
       onAccept={(value: any) => {
         onChange({ target: { name: props.name, value } });

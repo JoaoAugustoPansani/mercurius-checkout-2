@@ -12,15 +12,25 @@ import {
 import { Box } from "@mui/system";
 import Image from "next/image";
 import * as React from "react";
+import { cardMatches } from "../../utils/cardMatches";
 import { CardType } from "../../utils/constants";
 import { CardCustomMask, CPFCustomMask } from "../TextMaskCustom";
 
 export const Card = () => {
-  const [cardHolder, setCardHolder] = React.useState<CardType>();
-  const [cardHolderLogoSrc, setCardHolderSrc] = React.useState("");
+  const [cardHolder, setCardHolder] = React.useState<CardType | undefined>();
+  const [cardHolderLogoSrc, setCardHolderLogoSrc] = React.useState<
+    string | undefined
+  >("");
+
+  const [checked, setChecked] = React.useState(true);
 
   const [CPFValue, setCPFValue] = React.useState("");
   const [cardValue, setCardValue] = React.useState("");
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setChecked(event.target.checked);
+    console.log(checked);
+  };
 
   const handleCPFChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCPFValue(event.target.value);
@@ -28,21 +38,10 @@ export const Card = () => {
 
   const handleCardChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCardValue(event.target.value);
-    cardHolderHandler(event.target.value);
+    handleCardHolder(event.target.value);
   };
 
-  const cardMatches = {
-    visa: new RegExp(/^4[0-9]{12}(?:[0-9]{3})?$/),
-    mastercard: new RegExp(/^5[1-5][0-9]{14}$/),
-    amex: new RegExp(/^3[47][0-9]{13}$/),
-    diners: new RegExp(/^3(?:0[0-5]|[68][0-9])[0-9]{11}$/),
-    hipercard: new RegExp(/^(606282d{10}(d{3})?)|(3841d{15})$/),
-    elo: new RegExp(
-      /^((((636368)|(438935)|(504175)|(451416)|(636297))d{0,10})|((5067)|(4576)|(4011))d{0,12})$/
-    ),
-  };
-
-  const cardHolderHandler = (value: string) => {
+  const handleCardHolder = (value: string) => {
     const cardType = (() => {
       if (value.replaceAll(" ", "").match(cardMatches.visa)) {
         return { type: CardType.Visa, iconSrc: "/visa.svg" };
@@ -59,7 +58,8 @@ export const Card = () => {
       }
     })();
 
-    // setCardHolder(cardType.type);
+    setCardHolder(cardType?.type);
+    setCardHolderLogoSrc(cardType?.iconSrc);
   };
 
   return (
@@ -76,9 +76,21 @@ export const Card = () => {
       <Typography>
         Estes dados serão usados para realizar o seu pagamento
       </Typography>
-      <Box sx={{ display: "flex", alignItems: "center", marginTop: "4px" }}>
-        <Checkbox defaultChecked />
-        <Typography>Utilizar informações pessoais</Typography>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          marginTop: "4px",
+        }}
+      >
+        <Checkbox
+          checked={checked}
+          onChange={handleCheck}
+          inputProps={{ "aria-label": "controlled" }}
+        />
+        <Typography>
+          Utilizar informações pessoais para validar pagamento
+        </Typography>
       </Box>
       <Box sx={{ display: "flex", gap: "12px" }}>
         <TextField label="Nome no cartão" variant="outlined" fullWidth />
@@ -115,7 +127,14 @@ export const Card = () => {
             endAdornment={
               cardHolder != undefined ? (
                 <Icon>
-                  <Image alt={`${cardHolder} logo`} src="" />
+                  <Image
+                    src={
+                      cardHolderLogoSrc != undefined ? cardHolderLogoSrc : ""
+                    }
+                    alt={`${cardHolder} logo`}
+                    width={28}
+                    height={28}
+                  />
                 </Icon>
               ) : null
             }
