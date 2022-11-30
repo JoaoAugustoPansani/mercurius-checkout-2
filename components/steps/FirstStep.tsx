@@ -8,12 +8,23 @@ import { PaymentMethod } from "../forms/PaymentMethod";
 import { Address } from "../forms/Address";
 import { Card } from "../forms/Card";
 import { usePersonalInfo } from "../../providers/PersonalInfoProvider";
+import { usePaymentMethod } from "../../providers/PaymentMethodProvider";
+import { useStep } from "../../providers/StepProvider";
+import { FunctionComponent } from "react";
 
-export const FirstStep = () => {
+export const FirstStep: FunctionComponent = () => {
   const { isPersonalInfoValid } = usePersonalInfo();
+  const { paymentMethod } = usePaymentMethod();
+  const { actualStep, stepHandler } = useStep();
 
   return (
-    <Box sx={{ width: "70%" }}>
+    <Box
+      sx={
+        actualStep == 1
+          ? { width: "70%", padding: "16px 0" }
+          : { display: "none" }
+      }
+    >
       <Container sx={{ margin: "12px 0" }}>
         <Typography>Etapas 1 de 2</Typography>
       </Container>
@@ -29,14 +40,15 @@ export const FirstStep = () => {
         blockParam={isPersonalInfoValid}
         title="MÉTODOS DE PAGAMENTO"
       />
-      {/* <Section child={<Address />} title="ENDEREÇO DE COBRANÇA" /> */}
-      {/* <Section child={<Card />} title="INFORMAÇÕES DE PAGAMENTO" /> */}
       <Container sx={{ display: "flex", width: "100%", marginTop: "32px" }}>
         <Button
           size="large"
           variant="contained"
-          disabled={!isPersonalInfoValid}
+          disabled={!isPersonalInfoValid || paymentMethod == undefined}
           sx={{ marginLeft: "auto" }}
+          onClick={() => {
+            stepHandler(2);
+          }}
         >
           Seguir para pagamento
         </Button>

@@ -12,12 +12,14 @@ import {
 import { Box } from "@mui/system";
 import Image from "next/image";
 import * as React from "react";
-import { cardMatches } from "../../utils/cardMatches";
+import { useCardType } from "../../providers/CardTypeProvider";
+import { cardRegex } from "../../utils/cardRegex";
 import { CardType } from "../../utils/constants";
 import { CardCustomMask, CPFCustomMask } from "../TextMaskCustom";
 
 export const Card = () => {
-  const [cardHolder, setCardHolder] = React.useState<CardType | undefined>();
+  const { cardType, cardTypeHandler } = useCardType();
+
   const [cardHolderLogoSrc, setCardHolderLogoSrc] = React.useState<
     string | undefined
   >("");
@@ -29,7 +31,6 @@ export const Card = () => {
 
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     setChecked(event.target.checked);
-    console.log(checked);
   };
 
   const handleCPFChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,24 +43,33 @@ export const Card = () => {
   };
 
   const handleCardHolder = (value: string) => {
-    const cardType = (() => {
-      if (value.replaceAll(" ", "").match(cardMatches.visa)) {
-        return { type: CardType.Visa, iconSrc: "/visa.svg" };
-      } else if (value.replaceAll(" ", "").match(cardMatches.mastercard)) {
-        return { type: CardType.MasterCard, iconSrc: "/master.svg" };
-      } else if (value.replaceAll(" ", "").match(cardMatches.amex)) {
-        return { type: CardType.Amex, iconSrc: "/amex.svg" };
-      } else if (value.replaceAll(" ", "").match(cardMatches.diners)) {
-        return { type: CardType.Diners, iconSrc: "/dinersclub.svg" };
-      } else if (value.replaceAll(" ", "").match(cardMatches.hipercard)) {
-        return { type: CardType.Hipercard, iconSrc: "/hipercard.svg" };
-      } else if (value.replaceAll(" ", "").match(cardMatches.elo)) {
-        return { type: CardType.Elo, iconSrc: "/elo.svg" };
-      }
-    })();
+    cardTypeHandler(value);
 
-    setCardHolder(cardType?.type);
-    setCardHolderLogoSrc(cardType?.iconSrc);
+    switch (cardType) {
+      case CardType.Visa:
+        setCardHolderLogoSrc("/visa.svg");
+        break;
+
+      case CardType.MasterCard:
+        setCardHolderLogoSrc("/master.svg");
+        break;
+
+      case CardType.Amex:
+        setCardHolderLogoSrc("/amex.svg");
+        break;
+
+      case CardType.Diners:
+        setCardHolderLogoSrc("/dinersclub.svg");
+        break;
+
+      case CardType.Hipercard:
+        setCardHolderLogoSrc("/hipercard.svg");
+        break;
+
+      case CardType.Elo:
+        setCardHolderLogoSrc("/elo.svg");
+        break;
+    }
   };
 
   return (
@@ -125,15 +135,15 @@ export const Card = () => {
             id="formatted-text-mask-input"
             inputComponent={CardCustomMask as any}
             endAdornment={
-              cardHolder != undefined ? (
+              cardType != undefined ? (
                 <Icon>
                   <Image
                     src={
                       cardHolderLogoSrc != undefined ? cardHolderLogoSrc : ""
                     }
-                    alt={`${cardHolder} logo`}
-                    width={28}
-                    height={28}
+                    alt={`${cardType} logo`}
+                    width={24}
+                    height={24}
                   />
                 </Icon>
               ) : null

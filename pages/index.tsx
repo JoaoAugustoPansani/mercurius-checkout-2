@@ -4,14 +4,10 @@ import Image from "next/image";
 import { CartSummary } from "../components/CartSummary";
 import { EmptyContainer } from "../components/EmptyContainer";
 import { PurchaseSummary } from "../components/PurchaseSummary";
-import { Section } from "../components/Section";
-import { Voucher } from "../components/forms/Voucher";
-import { PersonalInfo } from "../components/forms/PersonalInfo";
-import { PaymentMethod } from "../components/forms/PaymentMethod";
-import { Button, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { FirstStep } from "../components/steps/FirstStep";
 import { AllProviders } from "../providers/AllProviders";
+import { useStep } from "../providers/StepProvider";
+import { SecondStep } from "../components/steps/SecondStep";
 
 const cartItems = [
   {
@@ -23,12 +19,15 @@ const cartItems = [
 ];
 
 export default function Home() {
+  const { actualStep } = useStep();
+
   return (
     <AllProviders>
       <Container>
         <Header />
         <Box sx={{ display: "flex" }}>
           <FirstStep />
+          <SecondStep />
           <Box sx={{ width: "30%" }}>
             <PurchaseSummary
               subtotal={undefined}

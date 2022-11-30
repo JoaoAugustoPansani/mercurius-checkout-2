@@ -13,9 +13,10 @@ import PixIcon from "@mui/icons-material/Pix";
 import { PaymentOption } from "../PaymentOption";
 import CurrencyBitcoinIcon from "@mui/icons-material/CurrencyBitcoin";
 import { useState } from "react";
+import { usePaymentMethod } from "../../providers/PaymentMethodProvider";
 
 export const PaymentMethod = () => {
-  const [value, setValue] = useState("");
+  const { paymentMethod, paymentMethodHandler } = usePaymentMethod();
 
   return (
     <Box
@@ -32,16 +33,27 @@ export const PaymentMethod = () => {
       <FormGroup>
         <RadioGroup
           name="controlled-radio-buttons-group"
-          value={value}
+          value={paymentMethod}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-            setValue(event.target.value);
-            console.log(value);
+            paymentMethodHandler(event.target.value);
           }}
         >
-          <PaymentOption icon={<CreditCardIcon />} label="CARTÃO" />
-          <PaymentOption icon={<PixIcon />} label="PIX" />
-          <PaymentOption icon={<ArticleIcon />} label="BOLETO" />
-          <PaymentOption icon={<CurrencyBitcoinIcon />} label="CRYPTO" />
+          <PaymentOption
+            value={"card"}
+            icon={<CreditCardIcon />}
+            label="CARTÃO"
+          />
+          <PaymentOption value={"pix"} icon={<PixIcon />} label="PIX" />
+          <PaymentOption
+            value={"ticket"}
+            icon={<ArticleIcon />}
+            label="BOLETO"
+          />
+          <PaymentOption
+            value={"crypto"}
+            icon={<CurrencyBitcoinIcon />}
+            label="CRYPTO"
+          />
         </RadioGroup>
       </FormGroup>
     </Box>

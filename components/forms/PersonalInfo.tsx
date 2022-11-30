@@ -24,13 +24,12 @@ export const PersonalInfo = () => {
 
   const [termsChecked, setTermsChecked] = useState(false);
 
-  validateForm(
-    firstName.length > 1 &&
-      lastName.length > 1 &&
-      phoneNumber.length == 11 &&
-      isEmailValid(email) &&
-      termsChecked
-  );
+  validateForm(true);
+  // firstName.length > 1 &&
+  //   lastName.length > 1 &&
+  //   phoneNumber.length == 11 &&
+  //   isEmailValid(email) &&
+  //   termsChecked
 
   return (
     <Box

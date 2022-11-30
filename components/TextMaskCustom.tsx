@@ -3,6 +3,7 @@ import { IMaskInput } from "react-imask";
 import * as React from "react";
 import { CardType } from "../utils/constants";
 import { BreakfastDiningOutlined } from "@mui/icons-material";
+import { useCardType } from "../providers/CardTypeProvider";
 
 interface TextMaskCustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -60,15 +61,13 @@ export const CardCustomMask = React.forwardRef<
   const { onChange, ...other } = props;
   const ref = React.createRef();
 
-  const [cardHolder, setCardHolder] = React.useState();
+  const { cardType } = useCardType();
 
   return (
     <IMaskInput
       {...other}
       mask={
-        cardHolder == CardType.Amex
-          ? "0000 000000 00000"
-          : "0000 0000 0000 0000"
+        cardType == CardType.Amex ? "0000 000000 00000" : "0000 0000 0000 0000"
       }
       // inputRef={ref}
       onAccept={(value: any) => {
