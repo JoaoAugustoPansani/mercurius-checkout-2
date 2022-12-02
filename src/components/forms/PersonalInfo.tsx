@@ -25,11 +25,6 @@ export const PersonalInfo = () => {
   const [termsChecked, setTermsChecked] = useState(false);
 
   validateForm(true);
-  // firstName.length > 1 &&
-  //   lastName.length > 1 &&
-  //   phoneNumber.length == 11 &&
-  //   isEmailValid(email) &&
-  //   termsChecked
 
   return (
     <Box
@@ -105,6 +100,23 @@ export const PersonalInfo = () => {
           }}
         />
         <Typography>Aceitos os Termos de Uso e Condições</Typography>
+      </Box>
+      <Box sx={{ marginTop: "8px" }}>
+        <Button
+          size="large"
+          variant="contained"
+          onClick={() => {
+            validateForm(
+              firstName.length > 1 &&
+                lastName.length > 1 &&
+                phoneNumber.length == 11 &&
+                isEmailValid(email) &&
+                termsChecked
+            );
+          }}
+        >
+          Validar dados
+        </Button>
       </Box>
     </Box>
   );
