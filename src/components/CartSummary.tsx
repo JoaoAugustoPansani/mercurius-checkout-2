@@ -2,36 +2,17 @@ import { FunctionComponent, useState } from "react";
 import { Box, Container } from "@mui/system";
 import { Typography } from "@mui/material";
 import { CartProduct } from "./CartProduct";
-
-interface CartSummaryProps {
-  products: { id: number; title: string; thumbnail: string }[];
-}
+import { useProduct } from "../providers/ProductProvider";
 
 interface CartSummaryProps {}
 
-export const CartSummary: FunctionComponent<CartSummaryProps> = ({
-  products,
-}) => {
-  const CartProducts = () => {
-    return (
-      <Box>
-        {products.map((product) => {
-          return (
-            <CartProduct
-              key={product.id}
-              title={product.title}
-              thumbnail={product.thumbnail}
-            />
-          );
-        })}
-      </Box>
-    );
-  };
+export const CartSummary: FunctionComponent<CartSummaryProps> = ({}) => {
+  const { product } = useProduct();
 
   return (
     <Container>
       <Typography sx={{ marginBottom: "24px" }}>RESUMO DA SACOLA</Typography>
-      {products.length == 0 ? <Typography></Typography> : <CartProducts />}
+      <CartProduct title={product.name} thumbnail={product.thumbnail} />
     </Container>
   );
 };

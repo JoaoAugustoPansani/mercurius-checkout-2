@@ -5,44 +5,67 @@ import { CartSummary } from "../../components/CartSummary";
 import { EmptyContainer } from "../../components/EmptyContainer";
 import { PurchaseSummary } from "../../components/PurchaseSummary";
 import { FirstStep } from "../../components/steps/FirstStep";
-import { AllProviders } from "../../providers/AllProviders";
 import { SecondStep } from "../../components/steps/SecondStep";
 import { useRouter } from "next/router";
-
-const cartItems = [
-  {
-    id: 1,
-    title: "Mercurius PRO",
-    thumbnail:
-      "https://i0.wp.com/holdmerc.com.br/wp-content/uploads/2022/07/mercurius-pro.png?fit=500%2C500&ssl=1",
-  },
-];
+import { useProduct } from "../../providers/ProductProvider";
+import { CircularProgress } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const Checkout = () => {
   const router = useRouter();
   const slug = router.query.slug;
 
-  console.log(slug);
+  const { getProduct } = useProduct();
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        switch (slug) {
+          case "test":
+            getProduct(1);
+            break;
+
+          case "PRO":
+            getProduct(2);
+            break;
+        }
+
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchData();
+  }, [setIsLoading, getProduct, slug]);
 
   return (
     <Container>
       <Header />
-      <Box sx={{ display: "flex" }}>
-        <FirstStep />
-        <SecondStep />
-        <Box sx={{ width: "30%" }}>
-          <PurchaseSummary
-            subtotal={undefined}
-            taxes={undefined}
-            voucher={undefined}
-            voucherTitle={undefined}
-            total={undefined}
-          />
-          <Box sx={{ marginTop: "48px" }}>
-            <CartSummary products={cartItems} />
+      {isLoading ? (
+        <Container>
+          <CircularProgress />
+        </Container>
+      ) : (
+        <Box sx={{ display: "flex" }}>
+          <FirstStep />
+          <SecondStep />
+          <Box sx={{ width: "30%" }}>
+            <PurchaseSummary
+              subtotal={undefined}
+              taxes={undefined}
+              voucher={undefined}
+              voucherTitle={undefined}
+              total={undefined}
+            />
+            <Box sx={{ marginTop: "48px" }}>
+              <CartSummary />
+            </Box>
           </Box>
         </Box>
-      </Box>
+      )}
     </Container>
   );
 };

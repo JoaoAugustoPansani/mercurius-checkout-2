@@ -1,15 +1,13 @@
-import axios from "axios";
+import { api } from "../utils/api";
 
-const ProductApiService = () => {
-  const getProduct = async (id: number) => {
-    const { data: product } = await axios.get(
-      `http://127.0.0.1:8000/product/${id}`
-    );
+export const ProductApiService: () => {
+  fetchProduct: Function;
+} = () => {
+  const fetchProduct: Function = async (id: number) => {
+    const { data: product } = await api.get(`/product/${id}`);
 
     return product;
   };
 
-  return { getProduct };
+  return { fetchProduct };
 };
-
-export default ProductApiService;
